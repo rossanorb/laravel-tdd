@@ -18,11 +18,27 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testHomeResponseStatus()
     {
         $response = $this->get('/');
 
         $response->assertStatus(200);
+    }
+
+    public function testAuthentication(){
+        $user = factory(\App\User::class)->create();
+        $response = $this->actingAs($user)->get('/home');
+        $response->assertStatus(200);
+
+        /* passando um guardian user + guardian
+        $response = $this->actingAs($user, 'api')->get('/home');
+        */
+
+        /* retorna 303
+        $user = factory(\App\User::class)->create();
+        $response = $this->get('/home');
+        $response->assertStatus(200);
+        */
     }
 
     public function testDatabaseUsers(){
